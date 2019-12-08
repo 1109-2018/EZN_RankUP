@@ -1,0 +1,25 @@
+#Config simples
+
+Ranks:
+  default:
+    #prefixo do rank
+    prefix: '&7[default]'
+    #posição
+    position: 1
+    #inicial = true
+    default: true
+    #comandos ao upar
+    commands:
+      - 'pex user %player% group add %rank%'
+      - 'pex user %player% group remove %old_rank%'
+  rank2:
+    #prefixo
+    prefix: '&8[rank2]'
+    #preço
+    price: 100
+    #posição
+    position: 2
+    #comandos ao upar
+    commands:
+      - 'pex user %player% group add %rank%'
+      - 'pex user %player% group remove %old_rank%'

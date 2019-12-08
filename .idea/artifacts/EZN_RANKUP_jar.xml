@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EZN_RANKUP:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EZN_RANKUP_jar</output-path>
+    <root id="archive" name="EZN_RankUP.jar">
+      <element id="module-output" name="IJRankUP" />
+    </root>
+  </artifact>
+</component>

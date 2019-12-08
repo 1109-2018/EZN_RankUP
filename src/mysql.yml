@@ -1,0 +1,6 @@
+#Config simples
+
+Host: 'localhost'
+Username: 'root'
+Password: ''
+Database: 'server'

@@ -1,0 +1,17 @@
+#Config simples
+
+#Se setar false vai desativar o sistema de mineração e o sistema de picareta explosiva
+use: true
+
+#money por bloco * fortuna
+#se tiver explosive "bloco * explosive"
+money: 10000.00
+
+#quando minera 1 bloco
+actionbar_0:
+  use: true
+  message: "§7[§4!§7] §aQuebraste um bloco de §f%bloco%§a!"
+#quando minera apenas 1 minerio
+actionbar_1: "§7[§4!§7] §aMineraste um bloco de §f%bloco%§a e recebeste &f%money%&a!"
+#quando minera mais de 2 minerios
+actionbar_2: "§7[§4!§7] §aMineraste vários blocos de §f%bloco% &ae recebeste &f%money%&a!"

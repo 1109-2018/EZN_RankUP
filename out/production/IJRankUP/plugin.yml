@@ -1,0 +1,13 @@
+name: EZN_RankUP
+main: pt.elevenzeronine.rankup.RankupPlugin
+version: 1.0
+depend: [Vault]
+softdepend: [MVdWPlaceholderAPI]
+commands:
+  rankup:
+    description: rankup
+  ranks:
+    description: ranks
+  givepickaxe:
+    description: pickaxes
+    permission: pickaxes.use

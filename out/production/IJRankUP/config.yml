@@ -1,0 +1,86 @@
+#Config simples
+
+#Apenas usado na hora de salvar os players de 5 em 5 minutos
+debug: true
+
+#legendchat: {ezn_rank}
+#Scoreboard: {ezn_rank} <- atual
+#Scoreboard: {ezn_next_rank} <- proximo
+Placeholders:
+  last-rank: "§e[Não há mais ranks]"
+
+commands:
+  no_perm: '&cApenas admins podem usar esse comando!'
+  #/ranks
+  command_ranks:
+    - '&7[&fRankUP&7] &7-&b Comandos'
+    - ''
+    - '&b/rankup &7-&f Para dar RankUP'
+    - '&b/ranks listar &7-&f Lista os ranks'
+    - '&b/ranks reload &7-&f Dá reload nas configs'
+    - ''
+  #/ranks listar
+  ranks_list:
+    - '&7[&fRankUP&7] &7-&b Lista de Ranks'
+    - ''
+  #/ranks listar
+  ranks: '&7%position%) %prefix% » &2R$%price%'
+
+messages:
+  #Actionbar para o player
+  actionbar_rankup: '&7[&fRankUP&7] &aUpaste para &7%rank%&a!'
+  broadcast_rankup:
+    - ''
+    - '&7[&fRankUP&7] &aO player &7%player_name% &aupou para o rank &7%rank%&a!'
+    - ''
+  #Rank não encontrado
+  invalid:
+    - ''
+    - '&7[&fRankUP&7] &cErro o seu rank é inválido, relogue para resolver e se não resolver contacte 1 admin!'
+    - ''
+  #Ultimo rank
+  last_rank:
+    - ''
+    - '&7[&fRankUP&7] &cEstás no último rank!'
+    - ''
+  #Se encontra o rank
+  rank_found:
+    - ''
+    - '&7[&fRankUP&7] &aCarregando...'
+    - ''
+  #Mensagem se o player upar
+  rankup:
+    - ''
+    - '&7[&fRankUP&7] &7- &2Sucesso!'
+    - '&a&l[✔] &aVocê evoluiu para o rank %next_rank%'
+    - '&apor &2R$%price% coins'
+    - ''
+  #Mensagem sem money
+  no_money:
+    - ''
+    - '&7[&fRankUP&7] &7- &4Erro'
+    - '&cVocê precisa de mais &7R$%price% &ccoins.'
+    - ''
+  #Cancelar
+  cancel:
+    - ''
+    - '&7[&fRankUP&7] &cVocê cancelou a evolução para o rank: %next_rank%'
+    - ''
+
+Hologram:
+  #Informação do holograma
+  info:
+    - '&aInformações RankUP'
+    - '&eRank: %rank%'
+    - '&eProximo: %next_rank%'
+    - '&eCusto: &7R$%price%'
+  #Holograma se o player quiser aceitar
+  accept:
+    - '&a&l[✔]'
+    - '&aClica para'
+    - '&aconfirmar'
+  #Holograma se o player quiser cancelar
+  cancel:
+    - '&4&l[✘]'
+    - '&cClica para'
+    - '&ccancelar'
