@@ -3,6 +3,7 @@ package pt.elevenzeronine.rankup.listeners;
 import br.com.devpaulo.legendchat.api.events.ChatMessageEvent;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -49,6 +50,8 @@ public class RankupListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Material type = block.getType();
+
+        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 
         boolean b = type == Material.LAPIS_ORE || type == Material.IRON_ORE || type == Material.DIAMOND_ORE || type == Material.EMERALD_ORE;
 
