@@ -70,7 +70,8 @@ public class HologramRankup {
         as.setGravity(false);
         as.setVisible(false);
         as.setCustomNameVisible(false);
-        as.setHelmet(new ItemStack(44, 1, (short) 7));
+        as.setHelmet(new ItemStack(RankupPlugin.getPlugin().getConfig().getInt("Hologram.bench.id")
+                , 1, (short) RankupPlugin.getPlugin().getConfig().getInt("Hologram.bench.data")));
         as.setPassenger(player);
         RankupPlugin.getPlugin().hologramRankup.asRemove.put(player.getName(), as);
         //
