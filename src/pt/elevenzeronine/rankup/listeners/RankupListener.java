@@ -19,59 +19,6 @@ import pt.elevenzeronine.rankup.database.DataManager;
 public class RankupListener implements Listener {
 
     private Utils utils = new Utils();
-    private WorldGuardPlugin worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
-
-    private void breakBlocksInCube(Player player, Block start, int radius) {
-        Material type = start.getType();
-        if (radius < 0)
-            return;
-
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    if (!worldGuard.canBuild(player, start.getRelative(x, y, z)))
-                        return;
-
-                    if (type == Material.LAPIS_ORE || type == Material.IRON_ORE || type == Material.DIAMOND_ORE || type == Material.EMERALD_ORE) {
-                        start.getRelative(x, y, z).setType(Material.AIR);
-                    }
-                    start.getRelative(x, y, z).breakNaturally();
-                }
-            }
-        }
-
-
-    }
-
-    @EventHandler
-    public void onMineListener(BlockBreakEvent event) {
-        if (!RankupPlugin.getPlugin().mineracao.getBoolean("use")) return;
-
-        Player player = event.getPlayer();
-        Block block = event.getBlock();
-        Material type = block.getType();
-
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-
-        boolean b = type == Material.LAPIS_ORE || type == Material.IRON_ORE || type == Material.DIAMOND_ORE || type == Material.EMERALD_ORE;
-
-        if (!worldGuard.canBuild(player, block))
-            return;
-
-        if (player.getItemInHand().equals(RankupPlugin.getPlugin().pickaxe3x3)) {
-            utils.explosive3(player, block, b);
-            breakBlocksInCube(player, block, 1);
-        } else if (player.getItemInHand().equals(RankupPlugin.getPlugin().pickaxe6x6)) {
-            utils.explosive6(player, block, b);
-            breakBlocksInCube(player, block, 2);
-        } else if (player.getItemInHand().equals(RankupPlugin.getPlugin().pickaxe9x9)) {
-            utils.explosive9(player, block, b);
-            breakBlocksInCube(player, block, 3);
-        } else {
-            utils.noExplosive(player, block, b);
-        }
-
-    }
 
 
     @EventHandler
