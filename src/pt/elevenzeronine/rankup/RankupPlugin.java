@@ -23,7 +23,6 @@ import pt.elevenzeronine.rankup.commands.RankupCommand;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.SQLException;
 import java.util.*;
 
 public class RankupPlugin extends JavaPlugin {
@@ -36,7 +35,6 @@ public class RankupPlugin extends JavaPlugin {
     public Economy economy = null;
     public SpigotConfig ranks;
     public SpigotConfig mysql;
-    public SpigotConfig mineracao;
     public HashMap<Player, Rank> playerRankHashMap = new HashMap();
     public ArrayList<Rank> rankArrayList = new ArrayList();
 
