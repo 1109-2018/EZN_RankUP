@@ -13,9 +13,9 @@ public class DataManager {
 
     public static boolean hasPlayer(Player p) {
         try {
-            PreparedStatement st = RankupPlugin.getPlugin().getMySqlConnection().getConnection().prepareStatement("SELECT * FROM `ezn_rankup` WHERE `uuid` = ?");
-            st.setString(1, p.getUniqueId().toString());
-            ResultSet rs = st.executeQuery();
+            PreparedStatement stm = ConnectionManager.connection.prepareStatement("SELECT * FROM `ezn_rankup` WHERE `uuid` = ?");
+            stm.setString(1, p.getUniqueId().toString());
+            ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return true;
             }
@@ -28,7 +28,7 @@ public class DataManager {
     public static String getPlayer(Player p) {
         if (hasPlayer(p)) {
             try {
-                PreparedStatement stm = RankupPlugin.getPlugin().getMySqlConnection().getConnection().prepareStatement("SELECT * FROM `ezn_rankup` WHERE `uuid` = ?");
+                PreparedStatement stm = ConnectionManager.connection.prepareStatement("SELECT * FROM `ezn_rankup` WHERE `uuid` = ?");
                 stm.setString(1, p.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -46,7 +46,7 @@ public class DataManager {
 
     public static void setPlayer(Player p, String rank) {
         try {
-            PreparedStatement st = RankupPlugin.getPlugin().getMySqlConnection().getConnection().prepareStatement("UPDATE `ezn_rankup` SET `rank` = ? WHERE `uuid` = ?");
+            PreparedStatement st = ConnectionManager.connection.prepareStatement("UPDATE `ezn_rankup` SET `rank` = ? WHERE `uuid` = ?");
             st.setString(1, rank);
             st.setString(2, p.getUniqueId().toString());
             st.executeUpdate();
@@ -57,7 +57,7 @@ public class DataManager {
 
     public static void addPlayer(Player p) {
         try {
-            PreparedStatement st = RankupPlugin.getPlugin().getMySqlConnection().getConnection().prepareStatement("INSERT INTO `ezn_rankup`(`player`, `uuid`, `rank`) VALUES (?,?,?)");
+            PreparedStatement st = ConnectionManager.connection.prepareStatement("INSERT INTO `ezn_rankup`(`player`, `uuid`, `rank`) VALUES (?,?,?)");
             st.setString(1, p.getName());
             st.setString(2, p.getUniqueId().toString());
             st.setString(3, RankupPlugin.getPlugin().defaultRank.getRank());
