@@ -4,20 +4,15 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import pt.elevenzeronine.rankup.utils.HologramRankup;
 import pt.elevenzeronine.rankup.utils.objects.SpigotConfig;
 import pt.elevenzeronine.rankup.utils.Utils;
-import pt.elevenzeronine.rankup.utils.objects.ItemBuilder;
 import pt.elevenzeronine.rankup.hooks.PlaceholderHook;
-import pt.elevenzeronine.rankup.commands.PickaxesCommand;
 import pt.elevenzeronine.rankup.commands.RanksCommand;
 import pt.elevenzeronine.rankup.database.ConnectionManager;
 import pt.elevenzeronine.rankup.database.DataManager;
@@ -44,17 +39,6 @@ public class RankupPlugin extends JavaPlugin {
     public SpigotConfig mineracao;
     public HashMap<Player, Rank> playerRankHashMap = new HashMap();
     public ArrayList<Rank> rankArrayList = new ArrayList();
-    public ItemStack pickaxe3x3 = new ItemBuilder(Material.DIAMOND_PICKAXE, 1)
-            .setName("§6Picareta Explosiva 3").setLore("§eQuebra 18 blocos de cada vez")
-            .addEnchant(Enchantment.DURABILITY, 3).toItemStack();
-    public ItemStack pickaxe6x6 = new ItemBuilder(Material.DIAMOND_PICKAXE, 1)
-            .setName("§6Picareta Explosiva 6").setLore("§eQuebra 77 blocos de cada vez")
-            .addEnchant(Enchantment.DURABILITY, 6).toItemStack();
-    public ItemStack pickaxe9x9 = new ItemBuilder(Material.DIAMOND_PICKAXE, 1)
-            .setName("§6Picareta Explosiva 9").setLore("§eQuebra 196 blocos de cada vez")
-            .addEnchant(Enchantment.DURABILITY, 9).toItemStack();
-
-    private ConnectionManager connectionMySql;
 
     public Rank defaultRank;
 
@@ -63,7 +47,7 @@ public class RankupPlugin extends JavaPlugin {
         if (!getPlugin().getName().equalsIgnoreCase("EZN_RANKUP")) {
             Bukkit.getPluginManager().disablePlugin(this);
             int i;
-            for (i =1; i <=50; i++) {
+            for (i = 1; i <= 50; i++) {
                 Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §cNao mudes o nome do plugin, para ele funcionar!");
             }
             return;
@@ -91,14 +75,6 @@ public class RankupPlugin extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eConfiguracao mysql.yml carregada!");
         }
 
-        mineracao = new SpigotConfig("mineracao.yml");
-        if (!mineracao.exists()) {
-            mineracao.saveDefaultConfig();
-            Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eConfiguracao mineracao.yml foi criada!");
-        } else {
-            Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eConfiguracao mineracao.yml carregada!");
-        }
-
         File configFile = new File(this.getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             saveDefaultConfig();
@@ -108,29 +84,21 @@ public class RankupPlugin extends JavaPlugin {
         }
 
 
-
-
         getCommand("rankup").setExecutor(new RankupCommand());
         getCommand("ranks").setExecutor(new RanksCommand());
-        if (mineracao.getBoolean("use")) {
-            getCommand("givepickaxe").setExecutor(new PickaxesCommand());
-            Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eTodos os eventos foram carregados!");
-        } else {
-            Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §cDesativado sistema de mineracao!");
-            Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eTodos os eventos foram carregados!");
-        }
+
+        Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eTodos os eventos foram carregados!");
         Bukkit.getConsoleSender().sendMessage("§7[EZN_RankUP] §eTodos os comandos foram carregados!");
 
         loadRanks();
         loadVault();
         registerListeners();
 
-        connectionMySql = new ConnectionManager(this, "`player` VARCHAR(24) NULL, `uuid` VARCHAR(60) NULL, `rank` VARCHAR(250)",
-                mysql.getString("Host")
-                , mysql.getString("Username")
-                , mysql.getString("Password")
-                , mysql.getString("Database")
-                , "ezn_rankup");
+        if (RankupPlugin.getPlugin().mysql.getBoolean("MySQL")) {
+            ConnectionManager.openMySqlConnection();
+        } else {
+            ConnectionManager.openSQLiteConnection();
+        }
         runnableRanks();
 
         if (Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
@@ -158,25 +126,19 @@ public class RankupPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         savePlayers();
-        try {
-            RankupPlugin.getPlugin().getMySqlConnection().close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ConnectionManager.close();
         playerRankHashMap.clear();
         rankArrayList.clear();
         Map<String, ArmorStand> localhash = hologramRankup.asRemove;
 
 
-        if(localhash.isEmpty()) {
+        if (localhash.isEmpty()) {
             return;
         }
         for (Map.Entry me : localhash.entrySet()) {
-                ArmorStand as = localhash.get(me.getKey());
-                as.remove();
+            ArmorStand as = localhash.get(me.getKey());
+            as.remove();
         }
 
     }
@@ -195,12 +157,13 @@ public class RankupPlugin extends JavaPlugin {
         }
     }
 
-    private void runnableRanks() { (new BukkitRunnable()
-    {
-        public void run() {
-            savePlayers();
-        }
-    }).runTaskTimer(this, 180*20, 180*20); }
+    private void runnableRanks() {
+        (new BukkitRunnable() {
+            public void run() {
+                savePlayers();
+            }
+        }).runTaskTimer(this, 180 * 20, 180 * 20);
+    }
 
     private void loadRanks() {
         for (String rank : RankupPlugin.getPlugin().ranks.getSection("Ranks").getKeys(false)) {
@@ -214,7 +177,8 @@ public class RankupPlugin extends JavaPlugin {
             if (defaultb) {
                 Rank r = new Rank(nome, prefix, posicao, 0.0D, null, defaultb);
                 rankArrayList.add(r);
-                defaultRank = r; continue;
+                defaultRank = r;
+                continue;
             }
             double price = RankupPlugin.getPlugin().ranks.getDouble("Ranks." + rank + ".price");
             List<String> commands = RankupPlugin.getPlugin().ranks.getStringList("Ranks." + rank + ".commands");
@@ -246,8 +210,6 @@ public class RankupPlugin extends JavaPlugin {
     }
 
 
-    public ConnectionManager getMySqlConnection() {
-        return connectionMySql;
-    }
+
 
 }
