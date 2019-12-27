@@ -1,5 +1,6 @@
 #Config simples
 
+MySQL: false
 Host: 'localhost'
 Username: 'root'
 Password: ''
