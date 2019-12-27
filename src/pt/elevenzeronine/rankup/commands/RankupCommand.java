@@ -22,11 +22,20 @@ public class RankupCommand implements CommandExecutor {
             return true;
         }
 
-        Player player =(Player) sender;
+        Player player = (Player) sender;
 
 
         if (cmd.getName().equalsIgnoreCase("rankup")) {
-            if (args.length == 0 ) {
+            if (args.length == 0) {
+                for (String worlds : RankupPlugin.getPlugin().getConfig().getStringList("BlackList-Worlds")) {
+                    if (player.getWorld().getName().equals(worlds)) {
+                        for (String msg : RankupPlugin.getPlugin().getConfig()
+                                .getStringList("BlackList-Message")) {
+                            player.sendMessage(msg.replaceAll("&", "§"));
+                        }
+                        return true;
+                    }
+                }
                 Rank r = utils.getRank(player);
                 Rank nr = utils.getNextRank(player);
                 if (!RankupPlugin.getPlugin().playerRankHashMap.containsKey(player)) {
