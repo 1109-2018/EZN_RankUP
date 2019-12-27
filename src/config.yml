@@ -68,6 +68,10 @@ messages:
     - ''
 
 Hologram:
+  #Banco do player
+  bench:
+    id: 44
+    data: 7
   #Informação do holograma
   info:
     - '&aInformações RankUP'
