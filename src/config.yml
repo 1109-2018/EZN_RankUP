@@ -3,6 +3,15 @@
 #Apenas usado na hora de salvar os players de 5 em 5 minutos
 debug: true
 
+#Proibe de dar rankup em mundos
+BlackList-Message:
+  - '&4&lERRO'
+  - '&f&lEste mundo não é permitido dar /rankup'
+  - '&f&lDESCULPA'
+BlackList-Worlds:
+  - 'Exemplo1'
+  - 'Exemplo2'
+
 #legendchat: {ezn_rank}
 #Scoreboard: {ezn_rank} <- atual
 #Scoreboard: {ezn_next_rank} <- proximo
